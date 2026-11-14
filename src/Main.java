@@ -16,9 +16,9 @@ public class Main {
 
         System.out.println("Personagem: " + personagem + " Nivel: " + nivel);
 
-        if (hpAtual > 0 && hpAtual < 10) {
-            calculoPorcentagem = 1;
-        }
+       if (calculoPorcentagem == 0 && hpAtual > 0){
+           calculoPorcentagem = 1;
+       }
 
         System.out.println("HP: " + hpAtual + "/" + HP_MAXIMO + " (" + calculoPorcentagem + "%)");
         System.out.println("Dano critico: " + calculoCritico);
