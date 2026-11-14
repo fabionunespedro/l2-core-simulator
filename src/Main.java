@@ -13,6 +13,7 @@ public class Main {
         int calculoCritico = (int) (MULTIPLICADOR_DE_CRITICO * danoBase);
         int buffTimeMinutos = DURACAO_BUFF / 60;
         int buffTimeSegundos = DURACAO_BUFF % 60;
+        System.out.println("Personagem: " + personagem + " Nivel: " + nivel);
         System.out.println("HP: " + hpAtual + "/" + HP_MAXIMO + " (" + calculoPorcentagem + "%)");
         System.out.println("Dano critico: " + calculoCritico);
         System.out.println("Buff " + buff + ": " + buffTimeMinutos + "min " + buffTimeSegundos + "s");
