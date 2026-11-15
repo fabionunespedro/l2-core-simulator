@@ -4,7 +4,7 @@ public class Main {
         String buff = "Haste";
         String personagem = "Aria";
         String estado;
-        char grade = 'X';
+        char grade = 'C';
         final int HP_MAXIMO = 500;
         final double MULTIPLICADOR_DE_CRITICO = 1.5;
         final int DURACAO_BUFF = 754;
@@ -43,14 +43,12 @@ public class Main {
        }
 
        if (nivelMinimoGrade > 0) {
+           System.out.println("Equipamento grade " + grade + ": requer nivel " + nivelMinimoGrade);
            if (nivel >= nivelMinimoGrade) {
-
                System.out.println("Pode usar");
            } else {
-               System.out.println("Equipamento grade " + grade + ": requer nivel " + nivelMinimoGrade);
                System.out.println("não pode usar");
            }
-           System.out.println("Equipamento grade " + grade + ": requer nivel " + nivelMinimoGrade);
        } else {
            System.out.println("Grau de equipamento inválido");
        }
