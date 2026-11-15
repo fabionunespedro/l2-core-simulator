@@ -8,7 +8,7 @@ public class Main {
         final int HP_MAXIMO = 500;
         final double MULTIPLICADOR_DE_CRITICO = 1.5;
         final int DURACAO_BUFF = 754;
-        int nivel = 62;
+        int nivel = 20;
         int hpAtual = 360;
         int danoBase = 125;
         int calculoPorcentagem = (int) ((double) hpAtual / HP_MAXIMO * 100);
@@ -44,16 +44,16 @@ public class Main {
 
        if (nivelMinimoGrade > 0) {
            if (nivel >= nivelMinimoGrade) {
-               System.out.println("Equipamento grade " + grade + ": requer nivel " + nivelMinimoGrade);
+
                System.out.println("Pode usar");
            } else {
                System.out.println("Equipamento grade " + grade + ": requer nivel " + nivelMinimoGrade);
                System.out.println("não pode usar");
            }
+           System.out.println("Equipamento grade " + grade + ": requer nivel " + nivelMinimoGrade);
        } else {
            System.out.println("Grau de equipamento inválido");
        }
-
         System.out.println("HP: " + hpAtual + "/" + HP_MAXIMO + " (" + calculoPorcentagem + "%)" + ", Estado: " + estado);
         System.out.println("Dano critico: " + calculoCritico);
         System.out.println("Buff " + buff + ": " + buffTimeMinutos + "min " + buffTimeSegundos + "s");
