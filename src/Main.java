@@ -16,7 +16,6 @@ public class Main {
         int hpMonstro = 250;
         int danoBase = 125;
         int dano = 45;
-        int calculoPorcentagem = (int) ((double) hpAtual / HP_MAXIMO * 100);
         int calculoCritico = (int) (MULTIPLICADOR_DE_CRITICO * danoBase);
         int buffTimeMinutos = DURACAO_BUFF / 60;
         int buffTimeSegundos = DURACAO_BUFF % 60;
@@ -24,15 +23,11 @@ public class Main {
 
         System.out.println("Personagem: " + personagem + " Nivel: " + nivel);
 
-       if (calculoPorcentagem == 0 && hpAtual > 0){
-           calculoPorcentagem = 1;
-       }
-
-       if (calculoPorcentagem >= 70) {
+       if (calcularPorcentagem(hpAtual, HP_MAXIMO) >= 70) {
            estado = "Saudavel";
-       } else if (calculoPorcentagem >= 30) {
+       } else if (calcularPorcentagem(hpAtual, HP_MAXIMO) >= 30) {
            estado = "Ferido";
-       } else if (calculoPorcentagem >= 1) {
+       } else if (calcularPorcentagem(hpAtual, HP_MAXIMO) >= 1) {
            estado = "Critico";
        } else {
            estado = "Morto";
@@ -80,8 +75,16 @@ public class Main {
            }
        }
 
-        System.out.println("HP: " + hpAtual + "/" + HP_MAXIMO + " (" + calculoPorcentagem + "%)" + ", Estado: " + estado);
+        System.out.println("HP: " + hpAtual + "/" + HP_MAXIMO + " (" + calcularPorcentagem(hpAtual, HP_MAXIMO) + "%)" + ", Estado: " + estado);
         System.out.println("Dano critico: " + calculoCritico);
         System.out.println("Buff " + buff + ": " + buffTimeMinutos + "min " + buffTimeSegundos + "s");
+    }
+
+    static int calcularPorcentagem(int hpAtual, int hpMaximo) {
+        int porcentagem = (int) ((double) hpAtual / hpMaximo * 100);
+        if (porcentagem == 0 && hpAtual > 0){
+            return 1;
+        }
+        return porcentagem;
     }
 }
