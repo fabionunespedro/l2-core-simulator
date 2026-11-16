@@ -4,7 +4,6 @@ public class Main {
         String buff = "Haste";
         String personagem = "Aria";
         String monstro = "Goblin";
-        String estado;
         char grade = 'C';
         final int HP_MAXIMO = 500;
         final double MULTIPLICADOR_DE_CRITICO = 1.5;
@@ -20,18 +19,10 @@ public class Main {
         int buffTimeMinutos = DURACAO_BUFF / 60;
         int buffTimeSegundos = DURACAO_BUFF % 60;
         int nivelMinimoGrade;
+        int porcentagem = calcularPorcentagem(hpAtual, HP_MAXIMO);
+        String estado = definirEstado(porcentagem);
 
         System.out.println("Personagem: " + personagem + " Nivel: " + nivel);
-
-       if (calcularPorcentagem(hpAtual, HP_MAXIMO) >= 70) {
-           estado = "Saudavel";
-       } else if (calcularPorcentagem(hpAtual, HP_MAXIMO) >= 30) {
-           estado = "Ferido";
-       } else if (calcularPorcentagem(hpAtual, HP_MAXIMO) >= 1) {
-           estado = "Critico";
-       } else {
-           estado = "Morto";
-       }
 
        switch (grade) {
            case 'D' -> nivelMinimoGrade = 20;
@@ -75,9 +66,9 @@ public class Main {
            }
        }
 
-        System.out.println("HP: " + hpAtual + "/" + HP_MAXIMO + " (" + calcularPorcentagem(hpAtual, HP_MAXIMO) + "%)" + ", Estado: " + estado);
-        System.out.println("Dano critico: " + calculoCritico);
-        System.out.println("Buff " + buff + ": " + buffTimeMinutos + "min " + buffTimeSegundos + "s");
+       System.out.println("HP: " + hpAtual + "/" + HP_MAXIMO + " (" + porcentagem + "%)" + ", Estado: " + estado);
+       System.out.println("Dano critico: " + calculoCritico);
+       System.out.println("Buff " + buff + ": " + buffTimeMinutos + "min " + buffTimeSegundos + "s");
     }
 
     static int calcularPorcentagem(int hpAtual, int hpMaximo) {
@@ -86,5 +77,17 @@ public class Main {
             return 1;
         }
         return porcentagem;
+    }
+
+    static String definirEstado(int porcentagem) {
+        if (porcentagem >= 70) {
+            return "Saudavel";
+        } else if (porcentagem >= 30) {
+            return "Ferido";
+        } else if (porcentagem >= 1) {
+            return "Critico";
+        } else {
+            return "Morto";
+        }
     }
 }
