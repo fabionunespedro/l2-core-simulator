@@ -1,13 +1,14 @@
 public class Main {
+    private static final double MULTIPLICADOR_DE_CRITICO = 1.5;
+    private static final int HP_MAXIMO = 500;
+    private static final int DURACAO_BUFF = 754;
+
     public static void main(String[] args) {
         System.out.println("Initialize project lineage 2 core project");
         String buff = "Haste";
         String personagem = "Aria";
         String monstro = "Goblin";
         char grade = 'C';
-        final int HP_MAXIMO = 500;
-        final double MULTIPLICADOR_DE_CRITICO = 1.5;
-        final int DURACAO_BUFF = 754;
         int limiteDeTurnos = 10;
         int turnosPorCombate = 0;
         int nivel = 20;
@@ -15,12 +16,12 @@ public class Main {
         int hpMonstro = 250;
         int danoBase = 125;
         int dano = 45;
-        int calculoCritico = (int) (MULTIPLICADOR_DE_CRITICO * danoBase);
         int buffTimeMinutos = DURACAO_BUFF / 60;
         int buffTimeSegundos = DURACAO_BUFF % 60;
         int nivelMinimoGrade;
         int porcentagem = calcularPorcentagem(hpAtual, HP_MAXIMO);
         String estado = definirEstado(porcentagem);
+        int calculoCritico = calcularCritico(danoBase);
 
         System.out.println("Personagem: " + personagem + " Nivel: " + nivel);
 
@@ -89,5 +90,9 @@ public class Main {
         } else {
             return "Morto";
         }
+    }
+
+    static int calcularCritico(int danoBase) {
+        return (int) (MULTIPLICADOR_DE_CRITICO * danoBase);
     }
 }
