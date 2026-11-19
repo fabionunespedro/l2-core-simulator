@@ -16,23 +16,12 @@ public class Main {
         int hpMonstro = 250;
         int danoBase = 125;
         int dano = 45;
-        int buffTimeMinutos = DURACAO_BUFF / 60;
-        int buffTimeSegundos = DURACAO_BUFF % 60;
-        int nivelMinimoGrade;
         int porcentagem = calcularPorcentagem(hpAtual, HP_MAXIMO);
         String estado = definirEstado(porcentagem);
         int calculoCritico = calcularCritico(danoBase);
+        int nivelMinimoGrade = obterNivelMinimo(grade);
 
         System.out.println("Personagem: " + personagem + " Nivel: " + nivel);
-
-       switch (grade) {
-           case 'D' -> nivelMinimoGrade = 20;
-           case 'C' -> nivelMinimoGrade = 40;
-           case 'B' -> nivelMinimoGrade = 52;
-           case 'A' -> nivelMinimoGrade = 61;
-           case 'S' -> nivelMinimoGrade = 76;
-           default -> nivelMinimoGrade = 0;
-       }
 
        if (nivelMinimoGrade > 0) {
            System.out.println("Equipamento grade " + grade + ": requer nivel " + nivelMinimoGrade);
@@ -69,7 +58,7 @@ public class Main {
 
        System.out.println("HP: " + hpAtual + "/" + HP_MAXIMO + " (" + porcentagem + "%)" + ", Estado: " + estado);
        System.out.println("Dano critico: " + calculoCritico);
-       System.out.println("Buff " + buff + ": " + buffTimeMinutos + "min " + buffTimeSegundos + "s");
+       System.out.println("Buff " + buff + ": " + formatarDuracao(DURACAO_BUFF));
     }
 
     static int calcularPorcentagem(int hpAtual, int hpMaximo) {
@@ -94,5 +83,22 @@ public class Main {
 
     static int calcularCritico(int danoBase) {
         return (int) (MULTIPLICADOR_DE_CRITICO * danoBase);
+    }
+
+    static int obterNivelMinimo(char grade) {
+        return switch (grade) {
+            case 'D' -> 20;
+            case 'C' -> 40;
+            case 'B' -> 52;
+            case 'A' -> 61;
+            case 'S' -> 76;
+            default -> 0;
+        };
+    }
+
+    static String formatarDuracao(int time) {
+        int buffTimeMinutos = time / 60;
+        int buffTimeSegundos = time % 60;
+        return buffTimeMinutos + "min " + buffTimeSegundos + "s";
     }
 }
