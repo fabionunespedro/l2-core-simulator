@@ -37,7 +37,7 @@ public class Main {
        if (dano <= 0) {
            System.out.println("Dano inválido");
        } else {
-           while (hpMonstro > 0 && turnosPorCombate < limiteDeTurnos) {
+           while (!estaMorto(hpMonstro)  && turnosPorCombate < limiteDeTurnos) {
                turnosPorCombate++;
                if (errouGolpe(turnosPorCombate)) {
                    System.out.println("Turno " + turnosPorCombate + ": " + personagem + " errou o golpe!");
@@ -47,7 +47,7 @@ public class Main {
 
                System.out.println("Turno " + turnosPorCombate + ": " + monstro + " recebeu " + dano + " de dano (HP restante: " + hpMonstro + ")");
            }
-           if(hpMonstro <= 0) {
+           if(estaMorto(hpMonstro)) {
                System.out.println(monstro + " derrotado em " + turnosPorCombate + " turnos");
            } else {
                System.out.println(monstro + " fugiu!");
@@ -107,5 +107,9 @@ public class Main {
 
     static boolean errouGolpe(int turnoPorCombate) {
         return turnoPorCombate % 3 == 0;
+    }
+
+    static boolean estaMorto(int hpMonstro) {
+        return hpMonstro <= 0;
     }
 }
