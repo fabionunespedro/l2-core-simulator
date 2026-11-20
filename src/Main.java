@@ -43,10 +43,8 @@ public class Main {
                    System.out.println("Turno " + turnosPorCombate + ": " + personagem + " errou o golpe!");
                    continue;
                }
-               hpMonstro -= dano;
-               if (hpMonstro < 0) {
-                   hpMonstro = 0;
-               }
+               hpMonstro = aplicarDano(hpMonstro, dano);
+
                System.out.println("Turno " + turnosPorCombate + ": " + monstro + " recebeu " + dano + " de dano (HP restante: " + hpMonstro + ")");
            }
            if(hpMonstro <= 0) {
@@ -100,5 +98,10 @@ public class Main {
         int buffTimeMinutos = time / 60;
         int buffTimeSegundos = time % 60;
         return buffTimeMinutos + "min " + buffTimeSegundos + "s";
+    }
+
+    static int aplicarDano(int hp, int dano) {
+        int hpRestante = hp - dano;
+        return hpRestante < 0 ?  0 : hpRestante;
     }
 }
