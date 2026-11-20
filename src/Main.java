@@ -39,7 +39,7 @@ public class Main {
        } else {
            while (hpMonstro > 0 && turnosPorCombate < limiteDeTurnos) {
                turnosPorCombate++;
-               if (turnosPorCombate % 3 == 0) {
+               if (errouGolpe(turnosPorCombate)) {
                    System.out.println("Turno " + turnosPorCombate + ": " + personagem + " errou o golpe!");
                    continue;
                }
@@ -103,5 +103,9 @@ public class Main {
     static int aplicarDano(int hp, int dano) {
         int hpRestante = hp - dano;
         return hpRestante < 0 ?  0 : hpRestante;
+    }
+
+    static boolean errouGolpe(int turnoPorCombate) {
+        return turnoPorCombate % 3 == 0;
     }
 }
