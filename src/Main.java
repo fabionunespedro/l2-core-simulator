@@ -1,12 +1,15 @@
+import java.util.Scanner;
+
 public class Main {
     private static final double MULTIPLICADOR_DE_CRITICO = 1.5;
     private static final int HP_MAXIMO = 500;
     private static final int DURACAO_BUFF = 754;
 
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Initialize project lineage 2 core project");
         String buff = "Haste";
-        String personagem = "Aria";
+        String personagem;
         char grade = 'C';
         int limiteDeTurnos = 20;
         int turnosDaCacada = 0;
@@ -21,6 +24,16 @@ public class Main {
         int contadorDerrotados = 0;
         String[] nomesMonstro = {"Goblin", "Orc", "Lobo"};
         int[] hpsMonstro = {250, 180, 90};
+
+
+
+        do {
+            System.out.println("Informe o nome do personagem!");
+            personagem = scanner.nextLine().trim();
+            if (!validarNome(personagem)) {
+                System.out.println("Nome inválido!");
+            }
+        }while (!validarNome(personagem));
 
         System.out.println("Personagem: " + personagem + " Nivel: " + nivel);
 
@@ -117,5 +130,9 @@ public class Main {
 
     static boolean estaMorto(int hpMonstro) {
         return hpMonstro <= 0;
+    }
+
+    static boolean validarNome(String nome) {
+        return nome.length() > 2 && nome.length() < 17;
     }
 }
