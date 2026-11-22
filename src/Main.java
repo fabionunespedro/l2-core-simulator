@@ -24,8 +24,7 @@ public class Main {
         int contadorDerrotados = 0;
         String[] nomesMonstro = {"Goblin", "Orc", "Lobo"};
         int[] hpsMonstro = {250, 180, 90};
-
-
+        String opcaoDeEntrada;
 
         do {
             System.out.println("Informe o nome do personagem!");
@@ -34,6 +33,19 @@ public class Main {
                 System.out.println("Nome inválido!");
             }
         }while (!validarNome(personagem));
+
+        do {
+            menu();
+            opcaoDeEntrada = scanner.nextLine();
+
+            switch (opcaoDeEntrada) {
+                case "1" -> System.out.println("[status em construção]\n");
+                case "2" -> System.out.println("[status em construção]\n");
+                case "3" -> System.out.println("[status em construção]\n");
+                case "0" -> System.out.println("Até mais, " + personagem + "!");
+                default -> System.out.println("Opção inválida.");
+            }
+        } while (!opcaoDeEntrada.equals("0"));
 
         System.out.println("Personagem: " + personagem + " Nivel: " + nivel);
 
@@ -134,5 +146,15 @@ public class Main {
 
     static boolean validarNome(String nome) {
         return nome.length() > 2 && nome.length() < 17;
+    }
+
+    static void menu() {
+        System.out.println("Informe opção correto de entrada!");
+        System.out.println("""
+                1 - Ver Status
+                2 - Caçar
+                3 - Verificar equipamento
+                0 - Sair
+                """);
     }
 }
