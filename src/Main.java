@@ -7,61 +7,67 @@ public class Main {
         System.out.println("Initialize project lineage 2 core project");
         String buff = "Haste";
         String personagem = "Aria";
-        String monstro = "Goblin";
         char grade = 'C';
-        int limiteDeTurnos = 10;
-        int turnosPorCombate = 0;
+        int limiteDeTurnos = 20;
+        int turnosDaCacada = 0;
         int nivel = 20;
         int hpAtual = 360;
-        int hpMonstro = 250;
         int danoBase = 125;
         int dano = 45;
         int porcentagem = calcularPorcentagem(hpAtual, HP_MAXIMO);
         String estado = definirEstado(porcentagem);
         int calculoCritico = calcularCritico(danoBase);
         int nivelMinimoGrade = obterNivelMinimo(grade);
+        int contadorDerrotados = 0;
+        String[] nomesMonstro = {"Goblin", "Orc", "Lobo"};
+        int[] hpsMonstro = {250, 180, 90};
 
         System.out.println("Personagem: " + personagem + " Nivel: " + nivel);
 
-       if (nivelMinimoGrade > 0) {
-           System.out.println("Equipamento grade " + grade + ": requer nivel " + nivelMinimoGrade);
-           if (nivel >= nivelMinimoGrade) {
-               System.out.println("Pode usar");
-           } else {
-               System.out.println("não pode usar");
-           }
-       } else {
-           System.out.println("Grau de equipamento inválido");
-       }
+        if (nivelMinimoGrade > 0) {
+            System.out.println("Equipamento grade " + grade + ": requer nivel " + nivelMinimoGrade);
+            if (nivel >= nivelMinimoGrade) {
+                System.out.println("Pode usar");
+            } else {
+                System.out.println("não pode usar");
+            }
+        } else {
+            System.out.println("Grau de equipamento inválido");
+        }
 
-       if (dano <= 0) {
-           System.out.println("Dano inválido");
-       } else {
-           while (!estaMorto(hpMonstro)  && turnosPorCombate < limiteDeTurnos) {
-               turnosPorCombate++;
-               if (errouGolpe(turnosPorCombate)) {
-                   System.out.println("Turno " + turnosPorCombate + ": " + personagem + " errou o golpe!");
-                   continue;
-               }
-               hpMonstro = aplicarDano(hpMonstro, dano);
+        if (dano <= 0) {
+            System.out.println("Dano inválido");
+        } else {
+            for (int i = 0; i < nomesMonstro.length && limiteDeTurnos > turnosDaCacada; i++) {
+                while (!estaMorto(hpsMonstro[i]) && turnosDaCacada < limiteDeTurnos) {
+                    turnosDaCacada++;
+                    if (errouGolpe(turnosDaCacada)) {
+                        System.out.println("Turno " + turnosDaCacada + ": " + personagem + " errou o golpe!");
+                        continue;
+                    }
+                    hpsMonstro[i] = aplicarDano(hpsMonstro[i], dano);
+                    System.out.println("Turno " + turnosDaCacada + ": " + nomesMonstro[i] + " recebeu " + dano + " de dano (HP restante: " + hpsMonstro[i] + ")");
+                }
+                if (estaMorto(hpsMonstro[i])) {
+                    contadorDerrotados++;
+                    System.out.println(nomesMonstro[i] + " derrotado no turno " + turnosDaCacada);
+                } else {
+                    System.out.println(nomesMonstro[i] + " fugiu!");
+                }
 
-               System.out.println("Turno " + turnosPorCombate + ": " + monstro + " recebeu " + dano + " de dano (HP restante: " + hpMonstro + ")");
-           }
-           if(estaMorto(hpMonstro)) {
-               System.out.println(monstro + " derrotado em " + turnosPorCombate + " turnos");
-           } else {
-               System.out.println(monstro + " fugiu!");
-           }
-       }
+            }
+            System.out.println(contadorDerrotados + "/" + hpsMonstro.length + " monstros derrotados em " + turnosDaCacada + " turnos!");
 
-       System.out.println("HP: " + hpAtual + "/" + HP_MAXIMO + " (" + porcentagem + "%)" + ", Estado: " + estado);
-       System.out.println("Dano critico: " + calculoCritico);
-       System.out.println("Buff " + buff + ": " + formatarDuracao(DURACAO_BUFF));
+        }
+
+        System.out.println("HP: " + hpAtual + "/" + HP_MAXIMO + " (" + porcentagem + "%)" + ", Estado: " + estado);
+        System.out.println("Dano critico: " + calculoCritico);
+        System.out.println("Buff " + buff + ": " + formatarDuracao(DURACAO_BUFF));
     }
 
     static int calcularPorcentagem(int hpAtual, int hpMaximo) {
         int porcentagem = (int) ((double) hpAtual / hpMaximo * 100);
-        if (porcentagem == 0 && hpAtual > 0){
+        if (porcentagem == 0 && hpAtual > 0) {
             return 1;
         }
         return porcentagem;
@@ -102,7 +108,7 @@ public class Main {
 
     static int aplicarDano(int hp, int dano) {
         int hpRestante = hp - dano;
-        return hpRestante < 0 ?  0 : hpRestante;
+        return hpRestante < 0 ? 0 : hpRestante;
     }
 
     static boolean errouGolpe(int turnoPorCombate) {
