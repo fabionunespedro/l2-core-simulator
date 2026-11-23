@@ -10,7 +10,7 @@ public class Main {
         System.out.println("Initialize project lineage 2 core project");
         String buff = "Haste";
         String personagem;
-        char grade = 'C';
+        char grade;
         int nivel = 20;
         int hpAtual = 360;
         int danoBase = 125;
@@ -18,7 +18,7 @@ public class Main {
         int porcentagem = calcularPorcentagem(hpAtual, HP_MAXIMO);
         String estado = definirEstado(porcentagem);
         int calculoCritico = calcularCritico(danoBase);
-        int nivelMinimoGrade = obterNivelMinimo(grade);
+        int nivelMinimoGrade;
         String[] nomesMonstro = {"Goblin", "Orc", "Lobo"};
         String opcaoDeEntrada;
 
@@ -70,23 +70,32 @@ public class Main {
                         System.out.println(contadorDerrotados + "/" + hpsMonstro.length + " monstros derrotados em " + turnosDaCacada + " turnos!");
                     }
                 }
-                case "3" -> System.out.println("[status em construção]\n");
+                case "3" -> {
+                    System.out.println("Informe a grade!");
+                    String gradeString = scanner.nextLine().toUpperCase().trim();
+
+                    if (gradeString.isEmpty()) {
+                        System.out.println("Grade inválida!");
+                        continue;
+                    } else {
+                        grade = gradeString.charAt(0);
+                    }
+                    nivelMinimoGrade = obterNivelMinimo(grade);
+                    if (nivelMinimoGrade > 0) {
+                        System.out.println("Equipamento grade " + grade + ": requer nivel " + nivelMinimoGrade);
+                        if (nivel >= nivelMinimoGrade) {
+                            System.out.println("Pode usar");
+                        } else {
+                            System.out.println("não pode usar");
+                        }
+                    } else {
+                        System.out.println("Grau de equipamento inválido");
+                    }
+                }
                 case "0" -> System.out.println("Até mais, " + personagem + "!");
                 default -> System.out.println("Opção inválida.");
             }
         } while (!opcaoDeEntrada.equals("0"));
-
-        if (nivelMinimoGrade > 0) {
-            System.out.println("Equipamento grade " + grade + ": requer nivel " + nivelMinimoGrade);
-            if (nivel >= nivelMinimoGrade) {
-                System.out.println("Pode usar");
-            } else {
-                System.out.println("não pode usar");
-            }
-        } else {
-            System.out.println("Grau de equipamento inválido");
-        }
-
     }
 
     static int calcularPorcentagem(int hpAtual, int hpMaximo) {
