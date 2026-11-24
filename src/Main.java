@@ -19,7 +19,6 @@ public class Main {
         String estado = definirEstado(porcentagem);
         int calculoCritico = calcularCritico(danoBase);
         int nivelMinimoGrade;
-        String[] nomesMonstro = {"Goblin", "Orc", "Lobo"};
         String opcaoDeEntrada;
 
         do {
@@ -28,7 +27,7 @@ public class Main {
             if (!validarNome(personagem)) {
                 System.out.println("Nome inválido!");
             }
-        }while (!validarNome(personagem));
+        } while (!validarNome(personagem));
 
         do {
             menu();
@@ -42,32 +41,38 @@ public class Main {
                     System.out.println("Buff " + buff + ": " + formatarDuracao(DURACAO_BUFF));
                 }
                 case "2" -> {
+
+                    Monstro goblin = new Monstro("Goblin", 250);
+                    Monstro orc = new Monstro("Orc", 180);
+                    Monstro lobo = new Monstro("Lobo", 90);
+
+                    Monstro[] monstros = {goblin, orc, lobo};
+
                     int contadorDerrotados = 0;
                     int limiteDeTurnos = 20;
                     int turnosDaCacada = 0;
-                    int[] hpsMonstro = {250, 180, 90};
                     if (dano <= 0) {
                         System.out.println("Dano inválido");
                     } else {
-                        for (int i = 0; i < nomesMonstro.length && limiteDeTurnos > turnosDaCacada; i++) {
-                            while (!estaMorto(hpsMonstro[i]) && turnosDaCacada < limiteDeTurnos) {
+                        for (int i = 0; i < monstros.length && limiteDeTurnos > turnosDaCacada; i++) {
+                            while (!monstros[i].estaMorto() && turnosDaCacada < limiteDeTurnos) {
                                 turnosDaCacada++;
                                 if (errouGolpe(turnosDaCacada)) {
                                     System.out.println("Turno " + turnosDaCacada + ": " + personagem + " errou o golpe!");
                                     continue;
                                 }
-                                hpsMonstro[i] = aplicarDano(hpsMonstro[i], dano);
-                                System.out.println("Turno " + turnosDaCacada + ": " + nomesMonstro[i] + " recebeu " + dano + " de dano (HP restante: " + hpsMonstro[i] + ")");
+                                monstros[i].receberDano(dano);
+                                System.out.println("Turno " + turnosDaCacada + ": " + monstros[i].getNome() + " recebeu " + dano + " de dano (HP restante: " + monstros[i].getHp() + ")");
                             }
-                            if (estaMorto(hpsMonstro[i])) {
+                            if (monstros[i].estaMorto()) {
                                 contadorDerrotados++;
-                                System.out.println(nomesMonstro[i] + " derrotado no turno " + turnosDaCacada);
+                                System.out.println(monstros[i].getNome() + " derrotado no turno " + turnosDaCacada);
                             } else {
-                                System.out.println(nomesMonstro[i] + " fugiu!");
+                                System.out.println(monstros[i].getNome() + " fugiu!");
                             }
 
                         }
-                        System.out.println(contadorDerrotados + "/" + hpsMonstro.length + " monstros derrotados em " + turnosDaCacada + " turnos!");
+                        System.out.println(contadorDerrotados + "/" + monstros.length + " monstros derrotados em " + turnosDaCacada + " turnos!");
                     }
                 }
                 case "3" -> {
@@ -139,17 +144,8 @@ public class Main {
         return buffTimeMinutos + "min " + buffTimeSegundos + "s";
     }
 
-    static int aplicarDano(int hp, int dano) {
-        int hpRestante = hp - dano;
-        return hpRestante < 0 ? 0 : hpRestante;
-    }
-
     static boolean errouGolpe(int turnoPorCombate) {
         return turnoPorCombate % 3 == 0;
-    }
-
-    static boolean estaMorto(int hpMonstro) {
-        return hpMonstro <= 0;
     }
 
     static boolean validarNome(String nome) {
