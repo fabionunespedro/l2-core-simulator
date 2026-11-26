@@ -8,7 +8,7 @@ Projeto para poder praticar Java de uma forma descontraida, no universo de Linea
 
 na raiz do projeto rode.
 ```
-javac -d out .\src\Main.java
+javac -d out .\src\*.java
 ```
 ```
 java -cp out Main
