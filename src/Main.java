@@ -2,7 +2,6 @@ import java.util.Scanner;
 
 public class Main {
     private static final double MULTIPLICADOR_DE_CRITICO = 1.5;
-    private static final int HP_MAXIMO = 500;
     private static final int DURACAO_BUFF = 754;
 
     public static void main(String[] args) {
@@ -11,15 +10,10 @@ public class Main {
         String buff = "Haste";
         String personagem;
         char grade;
-        int nivel = 20;
-        int hpAtual = 360;
         int danoBase = 125;
         int dano = 45;
-        int porcentagem = calcularPorcentagem(hpAtual, HP_MAXIMO);
-        String estado = definirEstado(porcentagem);
         int calculoCritico = calcularCritico(danoBase);
         int nivelMinimoGrade;
-        String[] nomesMonstro = {"Goblin", "Orc", "Lobo"};
         String opcaoDeEntrada;
 
         do {
@@ -28,46 +22,58 @@ public class Main {
             if (!validarNome(personagem)) {
                 System.out.println("Nome inválido!");
             }
-        }while (!validarNome(personagem));
+        } while (!validarNome(personagem));
+
+        Personagem personagem1 = new Personagem(personagem, 20, 500, 360);
 
         do {
             menu();
             opcaoDeEntrada = scanner.nextLine();
 
             switch (opcaoDeEntrada) {
+
+
                 case "1" -> {
-                    System.out.println("Personagem: " + personagem + " Nivel: " + nivel);
-                    System.out.println("HP: " + hpAtual + "/" + HP_MAXIMO + " (" + porcentagem + "%)" + ", Estado: " + estado);
+                    int porcentagem = personagem1.calcularPorcentagem();
+                    String estado = personagem1.definirEstado();
+                    System.out.println("Personagem: " + personagem1.getNome() + " Nivel: " + personagem1.getNivel());
+                    System.out.println("HP: " + personagem1.getHp() + "/" + personagem1.getHpMaximo() + " (" + porcentagem + "%)" + ", Estado: " + estado);
                     System.out.println("Dano critico: " + calculoCritico);
                     System.out.println("Buff " + buff + ": " + formatarDuracao(DURACAO_BUFF));
                 }
                 case "2" -> {
+
+                    Monstro goblin = new Monstro("Goblin", 250);
+                    Monstro orc = new Monstro("Orc", 180);
+                    Monstro lobo = new Monstro("Lobo", 90);
+
+                    Monstro[] monstros = {goblin, orc, lobo};
+
                     int contadorDerrotados = 0;
                     int limiteDeTurnos = 20;
                     int turnosDaCacada = 0;
-                    int[] hpsMonstro = {250, 180, 90};
                     if (dano <= 0) {
                         System.out.println("Dano inválido");
                     } else {
-                        for (int i = 0; i < nomesMonstro.length && limiteDeTurnos > turnosDaCacada; i++) {
-                            while (!estaMorto(hpsMonstro[i]) && turnosDaCacada < limiteDeTurnos) {
+                        for (int i = 0; i < monstros.length && limiteDeTurnos > turnosDaCacada; i++) {
+                            while (!monstros[i].estaMorto() && turnosDaCacada < limiteDeTurnos) {
                                 turnosDaCacada++;
                                 if (errouGolpe(turnosDaCacada)) {
-                                    System.out.println("Turno " + turnosDaCacada + ": " + personagem + " errou o golpe!");
+                                    System.out.println("Turno " + turnosDaCacada + ": " + personagem1.getNome() + " errou o golpe!");
                                     continue;
                                 }
-                                hpsMonstro[i] = aplicarDano(hpsMonstro[i], dano);
-                                System.out.println("Turno " + turnosDaCacada + ": " + nomesMonstro[i] + " recebeu " + dano + " de dano (HP restante: " + hpsMonstro[i] + ")");
+                                monstros[i].receberDano(dano);
+                                System.out.println("Turno " + turnosDaCacada + ": " + monstros[i].getNome() + " recebeu " + dano + " de dano (HP restante: " + monstros[i].getHp() + ")");
                             }
-                            if (estaMorto(hpsMonstro[i])) {
+                            if (monstros[i].estaMorto()) {
                                 contadorDerrotados++;
-                                System.out.println(nomesMonstro[i] + " derrotado no turno " + turnosDaCacada);
+                                System.out.println(monstros[i].getNome() + " derrotado no turno " + turnosDaCacada);
                             } else {
-                                System.out.println(nomesMonstro[i] + " fugiu!");
+                                System.out.println(monstros[i].getNome() + " fugiu!");
                             }
 
                         }
-                        System.out.println(contadorDerrotados + "/" + hpsMonstro.length + " monstros derrotados em " + turnosDaCacada + " turnos!");
+                        System.out.println(contadorDerrotados + "/" + monstros.length + " monstros derrotados em " + turnosDaCacada + " turnos!");
                     }
                 }
                 case "3" -> {
@@ -83,7 +89,7 @@ public class Main {
                     nivelMinimoGrade = obterNivelMinimo(grade);
                     if (nivelMinimoGrade > 0) {
                         System.out.println("Equipamento grade " + grade + ": requer nivel " + nivelMinimoGrade);
-                        if (nivel >= nivelMinimoGrade) {
+                        if (personagem1.getNivel() >= nivelMinimoGrade) {
                             System.out.println("Pode usar");
                         } else {
                             System.out.println("não pode usar");
@@ -92,30 +98,10 @@ public class Main {
                         System.out.println("Grau de equipamento inválido");
                     }
                 }
-                case "0" -> System.out.println("Até mais, " + personagem + "!");
+                case "0" -> System.out.println("Até mais, " + personagem1.getNome() + "!");
                 default -> System.out.println("Opção inválida.");
             }
         } while (!opcaoDeEntrada.equals("0"));
-    }
-
-    static int calcularPorcentagem(int hpAtual, int hpMaximo) {
-        int porcentagem = (int) ((double) hpAtual / hpMaximo * 100);
-        if (porcentagem == 0 && hpAtual > 0) {
-            return 1;
-        }
-        return porcentagem;
-    }
-
-    static String definirEstado(int porcentagem) {
-        if (porcentagem >= 70) {
-            return "Saudavel";
-        } else if (porcentagem >= 30) {
-            return "Ferido";
-        } else if (porcentagem >= 1) {
-            return "Critico";
-        } else {
-            return "Morto";
-        }
     }
 
     static int calcularCritico(int danoBase) {
@@ -139,17 +125,8 @@ public class Main {
         return buffTimeMinutos + "min " + buffTimeSegundos + "s";
     }
 
-    static int aplicarDano(int hp, int dano) {
-        int hpRestante = hp - dano;
-        return hpRestante < 0 ? 0 : hpRestante;
-    }
-
     static boolean errouGolpe(int turnoPorCombate) {
         return turnoPorCombate % 3 == 0;
-    }
-
-    static boolean estaMorto(int hpMonstro) {
-        return hpMonstro <= 0;
     }
 
     static boolean validarNome(String nome) {
