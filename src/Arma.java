@@ -4,10 +4,11 @@ public class Arma {
     private int danoBase;
     private double multiplicadorDeCritico = 1.5;
 
-    public Arma(String nome, int dano, int danoBase) {
+    public Arma(String nome, int dano, int danoBase, double multiplicadorDeCritico) {
         this.nome = nome;
         this.dano = dano;
         this.danoBase = danoBase;
+        this.multiplicadorDeCritico = multiplicadorDeCritico;
     }
 
     public int calcularCritico() {

@@ -12,7 +12,7 @@ public class Main {
         int nivelMinimoGrade;
         String opcaoDeEntrada;
 
-        Arma arma = new Arma("Arcana Mace", 45, 125);
+        Arma arma = new Arma("Arcana Mace", 45, 125, 1.5);
 
         do {
             System.out.println("Informe o nome do personagem!");
