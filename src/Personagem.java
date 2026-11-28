@@ -3,12 +3,18 @@ public class Personagem {
     private int nivel;
     private int hpMaximo;
     private int hp;
+    private Arma armaEquipada;
 
-    public Personagem(String nome, int nivel, int hpMaximo, int hp) {
+    public Personagem(String nome, int nivel, int hpMaximo, int hp, Arma armaEquipada) {
         this.nome = nome;
         this.nivel = nivel;
         this.hpMaximo = hpMaximo;
         this.hp = hp;
+        this.armaEquipada = armaEquipada;
+    }
+
+    public void atacar(Monstro alvo) {
+        alvo.receberDano(armaEquipada.getDano());
     }
 
     public int calcularPorcentagem() {
@@ -29,6 +35,10 @@ public class Personagem {
         } else {
             return "Morto";
         }
+    }
+
+    public Arma getArmaEquipada() {
+        return armaEquipada;
     }
 
     public String getNome() {

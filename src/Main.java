@@ -1,7 +1,6 @@
 import java.util.Scanner;
 
 public class Main {
-    private static final double MULTIPLICADOR_DE_CRITICO = 1.5;
     private static final int DURACAO_BUFF = 754;
 
     public static void main(String[] args) {
@@ -10,11 +9,10 @@ public class Main {
         String buff = "Haste";
         String personagem;
         char grade;
-        int danoBase = 125;
-        int dano = 45;
-        int calculoCritico = calcularCritico(danoBase);
         int nivelMinimoGrade;
         String opcaoDeEntrada;
+
+        Arma arma = new Arma("Arcana Mace", 45, 125, 1.5);
 
         do {
             System.out.println("Informe o nome do personagem!");
@@ -24,7 +22,7 @@ public class Main {
             }
         } while (!validarNome(personagem));
 
-        Personagem personagem1 = new Personagem(personagem, 20, 500, 360);
+        Personagem personagem1 = new Personagem(personagem, 20, 500, 360, arma);
 
         do {
             menu();
@@ -38,7 +36,7 @@ public class Main {
                     String estado = personagem1.definirEstado();
                     System.out.println("Personagem: " + personagem1.getNome() + " Nivel: " + personagem1.getNivel());
                     System.out.println("HP: " + personagem1.getHp() + "/" + personagem1.getHpMaximo() + " (" + porcentagem + "%)" + ", Estado: " + estado);
-                    System.out.println("Dano critico: " + calculoCritico);
+                    System.out.println("Dano critico: " + personagem1.getArmaEquipada().calcularCritico());
                     System.out.println("Buff " + buff + ": " + formatarDuracao(DURACAO_BUFF));
                 }
                 case "2" -> {
@@ -52,7 +50,7 @@ public class Main {
                     int contadorDerrotados = 0;
                     int limiteDeTurnos = 20;
                     int turnosDaCacada = 0;
-                    if (dano <= 0) {
+                    if (personagem1.getArmaEquipada().getDano() <= 0) {
                         System.out.println("Dano inválido");
                     } else {
                         for (int i = 0; i < monstros.length && limiteDeTurnos > turnosDaCacada; i++) {
@@ -62,8 +60,8 @@ public class Main {
                                     System.out.println("Turno " + turnosDaCacada + ": " + personagem1.getNome() + " errou o golpe!");
                                     continue;
                                 }
-                                monstros[i].receberDano(dano);
-                                System.out.println("Turno " + turnosDaCacada + ": " + monstros[i].getNome() + " recebeu " + dano + " de dano (HP restante: " + monstros[i].getHp() + ")");
+                                personagem1.atacar(monstros[i]);
+                                System.out.println("Turno " + turnosDaCacada + ": " + monstros[i].getNome() + " recebeu " + personagem1.getArmaEquipada().getDano() + " de dano (HP restante: " + monstros[i].getHp() + ")");
                             }
                             if (monstros[i].estaMorto()) {
                                 contadorDerrotados++;
@@ -102,10 +100,6 @@ public class Main {
                 default -> System.out.println("Opção inválida.");
             }
         } while (!opcaoDeEntrada.equals("0"));
-    }
-
-    static int calcularCritico(int danoBase) {
-        return (int) (MULTIPLICADOR_DE_CRITICO * danoBase);
     }
 
     static int obterNivelMinimo(char grade) {
